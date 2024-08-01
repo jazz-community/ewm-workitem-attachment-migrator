@@ -46,7 +46,8 @@ public class AttachmentMigrationUtility {
 		REMOVE_MULTI_WI_LINK("-rmMultiWILinks", "-rmMultiWILinks", false), //$NON-NLS-1$ //$NON-NLS-2$
 		ADD_WI_ID("-addWorkItemId", "-addWorkItemId"), //$NON-NLS-1$ //$NON-NLS-2$
 		DELETE_ATTACHMENTS_WITH_NO_WI("-deleteAttachmentsNoWI", "-delAttachmentsNoWI", false), //$NON-NLS-1$ //$NON-NLS-2$
-		PROJECT("-p", "-project"); //$NON-NLS-1$ //$NON-NLS-2$
+		PROJECT("-p", "-project"), //$NON-NLS-1$ //$NON-NLS-2$
+		LOGGER_LEVEL("-ll", "-level");
 
 		private final String fShortName;
 		private final String fLongName;
@@ -102,7 +103,10 @@ public class AttachmentMigrationUtility {
 			String projectItemId= null;
 			//Level level = Level.INFO;
 
+<<<<<<< Updated upstream
 			//setUpLoggingLevels(level);
+=======
+>>>>>>> Stashed changes
 			List<CmdLineArg> cmdArgs = processArgs(args);
 			if ((cmdArgs.contains(CmdLineArg.HELP)) || (cmdArgs.size() == 0)) {
 				InputStream inputStream = AttachmentMigrationUtility.class.getResourceAsStream("readme.txt"); //$NON-NLS-1$
@@ -117,6 +121,12 @@ public class AttachmentMigrationUtility {
 			if (cmdArgs.contains(CmdLineArg.LOG)) {
 				LogUtils.setLogFile(CmdLineArg.LOG.getValue());
 			}
+			
+			if (cmdArgs.contains(CmdLineArg.LOGGER_LEVEL)) {
+				level = Level.toLevel(CmdLineArg.LOGGER_LEVEL.getValue());
+			}
+			
+			setUpLoggingLevels(level);
 
 			if (cmdArgs.contains(CmdLineArg.USER_NAME)) {
 				userName = CmdLineArg.USER_NAME.getValue();

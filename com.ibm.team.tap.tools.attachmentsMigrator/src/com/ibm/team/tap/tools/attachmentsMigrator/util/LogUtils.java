@@ -57,7 +57,13 @@ public class LogUtils {
 		AppenderComponentBuilder appender = builder.newAppender("TRS Validator Utility log file appender", "File")
 				.addAttribute("fileName", file)
 				.add(layout);
+<<<<<<< Updated upstream
 		RootLoggerComponentBuilder rootLogger = builder.newRootLogger(Level.TRACE);
+=======
+		RootLoggerComponentBuilder rootLogger = builder.newRootLogger();
+		rootLogger.add(builder.newAppenderRef("TRS Validator Utility log file appender"));
+        builder.add(rootLogger);
+>>>>>>> Stashed changes
 		builder.add(appender);
 		rootLogger.add(builder.newAppenderRef("TRS Validator Utility log file appender"));
         builder.add(rootLogger);
