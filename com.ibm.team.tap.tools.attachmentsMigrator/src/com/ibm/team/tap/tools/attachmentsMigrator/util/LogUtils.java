@@ -108,7 +108,6 @@ public class LogUtils {
 	public static void logFatal(String message) {
 		getLogger().fatal(message);
 	}
-
 	public static void logFatal(String message, Throwable throwable) {
 		getLogger().fatal(message, throwable);
 	}
