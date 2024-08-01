@@ -101,12 +101,8 @@ public class AttachmentMigrationUtility {
 			String addWorkItemId = null;
 			boolean delete = false;
 			String projectItemId= null;
-			//Level level = Level.INFO;
+			Level level = Level.INFO;
 
-<<<<<<< Updated upstream
-			//setUpLoggingLevels(level);
-=======
->>>>>>> Stashed changes
 			List<CmdLineArg> cmdArgs = processArgs(args);
 			if ((cmdArgs.contains(CmdLineArg.HELP)) || (cmdArgs.size() == 0)) {
 				InputStream inputStream = AttachmentMigrationUtility.class.getResourceAsStream("readme.txt"); //$NON-NLS-1$
@@ -271,12 +267,12 @@ public class AttachmentMigrationUtility {
 		throw new IllegalArgumentException(message);
 	}
 
-//	private static void setUpLoggingLevels(Level level) {
-//		Configurator.initialize(new DefaultConfiguration());
-//		Configurator.setRootLevel(level);
-//
-//		if (level != Level.DEBUG) {
-//			System.setProperty("org.apache.commons.logging.Log", "org.apache.commons.logging.impl.SimpleLog"); //$NON-NLS-1$ //$NON-NLS-2$
-//		}
-//	}
+	private static void setUpLoggingLevels(Level level) {
+		Configurator.initialize(new DefaultConfiguration());
+		Configurator.setRootLevel(level);
+
+		if (level != Level.DEBUG) {
+			System.setProperty("org.apache.commons.logging.Log", "org.apache.commons.logging.impl.SimpleLog"); //$NON-NLS-1$ //$NON-NLS-2$
+		}
+	}
 }
