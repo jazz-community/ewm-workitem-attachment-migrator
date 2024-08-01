@@ -8,6 +8,7 @@
  ******************************************************************************/
 package com.ibm.team.tap.tools.attachmentsMigrator.util;
 
+import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.core.appender.RollingFileAppender;
@@ -16,6 +17,7 @@ import org.apache.logging.log4j.core.config.builder.api.AppenderComponentBuilder
 import org.apache.logging.log4j.core.config.builder.api.ConfigurationBuilder;
 import org.apache.logging.log4j.core.config.builder.api.ConfigurationBuilderFactory;
 import org.apache.logging.log4j.core.config.builder.api.LayoutComponentBuilder;
+import org.apache.logging.log4j.core.config.builder.api.RootLoggerComponentBuilder;
 import org.apache.logging.log4j.core.config.builder.impl.BuiltConfiguration;
 
 import com.ibm.team.tap.tools.attachmentsMigrator.AttachmentMigrationUtility;
@@ -28,35 +30,39 @@ import com.ibm.team.tap.tools.attachmentsMigrator.AttachmentMigrationUtility;
  */
 public class LogUtils {
 
-	private static Logger fLogger= null;
+	private static Logger fLogger = null;
 	private static RollingFileAppender fRollingFileAppender;
 	private static Logger fRootLogger;
-
+	
 	// 50 MB
 	private static long MAX_FILE_SIZE= 50000000;
 	private static int MAX_BACKUP_INDEX= 10;
 
 	private static Logger getLogger() {
-
+		
 		if (fLogger == null) {
-			fLogger= LogManager.getLogger(AttachmentMigrationUtility.class);
+			fLogger= LogManager.getLogger(AttachmentMigrationUtility.class);	
 		}
-
+		
 		return fLogger;
 	}
 
 	public static void setLogFile(String file) {
-
+		
 		ConfigurationBuilder<BuiltConfiguration> builder = ConfigurationBuilderFactory.newConfigurationBuilder();
+        //builder.setStatusLevel(Level.DEBUG);
 		builder.setConfigurationName("Default");
 		LayoutComponentBuilder layout = builder.newLayout("PatternLayout")
 				.addAttribute("pattern", "%d{dd MMM yyyy HH:mm:ss,SSSZ} [%t] %5p %c: %m%n");
 		AppenderComponentBuilder appender = builder.newAppender("TRS Validator Utility log file appender", "File")
 				.addAttribute("fileName", file)
 				.add(layout);
+		RootLoggerComponentBuilder rootLogger = builder.newRootLogger(Level.TRACE);
 		builder.add(appender);
+		rootLogger.add(builder.newAppenderRef("TRS Validator Utility log file appender"));
+        builder.add(rootLogger);
 		Configurator.reconfigure(builder.build());
- 			
+		
 	}
 
 	public static void logDebug(String message) {
@@ -78,7 +84,7 @@ public class LogUtils {
 	public static void logInfo(String message) {
 		getLogger().info(message);
 	}
-
+	
 	public static void logInfo(String message, Throwable throwable) {
 		getLogger().info(message, throwable);
 	}
