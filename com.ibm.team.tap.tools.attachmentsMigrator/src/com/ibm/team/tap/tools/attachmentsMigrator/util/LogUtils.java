@@ -51,7 +51,7 @@ public class LogUtils {
 		return fLogger;
 	}
 
-  public static void setLogFile(String file) throws IOException {
+	public static void setLogFile(String file) throws IOException {
 
         final LoggerContext ctx = (LoggerContext) LogManager.getContext(false);
         final Configuration config = ctx.getConfiguration();
