@@ -32,22 +32,22 @@ public class LogUtils {
 	private static Logger fLogger= null;
 	private static RollingFileAppender fRollingFileAppender;
 	private static Logger fRootLogger;
-
+	
 	// 50 MB
 	private static long MAX_FILE_SIZE= 50000000;
 	private static int MAX_BACKUP_INDEX= 10;
 
 	private static Logger getLogger() {
-
+		
 		if (fLogger == null) {
-			fLogger= LogManager.getLogger(AttachmentMigrationUtility.class);
+			fLogger= LogManager.getLogger(AttachmentMigrationUtility.class);	
 		}
-
+		
 		return fLogger;
 	}
 
 	public static void setLogFile(String file) {
-
+		
 		ConfigurationBuilder<BuiltConfiguration> builder = ConfigurationBuilderFactory.newConfigurationBuilder();
 		builder.setConfigurationName("Default");
 		LayoutComponentBuilder layout = builder.newLayout("PatternLayout")
@@ -60,7 +60,7 @@ public class LogUtils {
 		rootLogger.add(builder.newAppenderRef("TRS Validator Utility log file appender"));
         builder.add(rootLogger);
 		Configurator.reconfigure(builder.build());
- 			
+ 
 	}
 
 	public static void logDebug(String message) {
@@ -82,7 +82,7 @@ public class LogUtils {
 	public static void logInfo(String message) {
 		getLogger().info(message);
 	}
-
+	
 	public static void logInfo(String message, Throwable throwable) {
 		getLogger().info(message, throwable);
 	}
@@ -106,7 +106,6 @@ public class LogUtils {
 	public static void logFatal(String message) {
 		getLogger().fatal(message);
 	}
-
 	public static void logFatal(String message, Throwable throwable) {
 		getLogger().fatal(message, throwable);
 	}
