@@ -8,16 +8,20 @@
  ******************************************************************************/
 package com.ibm.team.tap.tools.attachmentsMigrator.util;
 
+import java.io.IOException;
+
+import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.core.Appender;
+import org.apache.logging.log4j.core.Layout;
+import org.apache.logging.log4j.core.LoggerContext;
+import org.apache.logging.log4j.core.appender.FileAppender;
 import org.apache.logging.log4j.core.appender.RollingFileAppender;
-import org.apache.logging.log4j.core.config.Configurator;
-import org.apache.logging.log4j.core.config.builder.api.AppenderComponentBuilder;
-import org.apache.logging.log4j.core.config.builder.api.ConfigurationBuilder;
-import org.apache.logging.log4j.core.config.builder.api.ConfigurationBuilderFactory;
-import org.apache.logging.log4j.core.config.builder.api.LayoutComponentBuilder;
-import org.apache.logging.log4j.core.config.builder.api.RootLoggerComponentBuilder;
-import org.apache.logging.log4j.core.config.builder.impl.BuiltConfiguration;
+import org.apache.logging.log4j.core.config.AppenderRef;
+import org.apache.logging.log4j.core.config.Configuration;
+import org.apache.logging.log4j.core.config.LoggerConfig;
+import org.apache.logging.log4j.core.layout.PatternLayout;
 
 import com.ibm.team.tap.tools.attachmentsMigrator.AttachmentMigrationUtility;
 
@@ -36,6 +40,7 @@ public class LogUtils {
 	// 50 MB
 	private static long MAX_FILE_SIZE= 50000000;
 	private static int MAX_BACKUP_INDEX= 10;
+	private static int BUFFER_SIZE= 4000;
 
 	private static Logger getLogger() {
 
@@ -46,21 +51,22 @@ public class LogUtils {
 		return fLogger;
 	}
 
-	public static void setLogFile(String file) {
+  public static void setLogFile(String file) throws IOException {
 
-		ConfigurationBuilder<BuiltConfiguration> builder = ConfigurationBuilderFactory.newConfigurationBuilder();
-		builder.setConfigurationName("Default");
-		LayoutComponentBuilder layout = builder.newLayout("PatternLayout")
-				.addAttribute("pattern", "%d{dd MMM yyyy HH:mm:ss,SSSZ} [%t] %5p %c: %m%n");
-		AppenderComponentBuilder appender = builder.newAppender("TRS Validator Utility log file appender", "File")
-				.addAttribute("fileName", file)
-				.add(layout);
-		RootLoggerComponentBuilder rootLogger = builder.newRootLogger();
-		builder.add(appender);
-		rootLogger.add(builder.newAppenderRef("TRS Validator Utility log file appender"));
-        builder.add(rootLogger);
-		Configurator.reconfigure(builder.build());
-			
+        final LoggerContext ctx = (LoggerContext) LogManager.getContext(false);
+        final Configuration config = ctx.getConfiguration();
+        final Layout layout = PatternLayout.createDefaultLayout(config);
+        Appender appender = FileAppender.createAppender(file, "false", "false", "File", "true",
+            "false", "false", "4000", layout, null, "false", null, config);
+        appender.start();
+        config.addAppender(appender);
+        AppenderRef ref = AppenderRef.createAppenderRef("File", null, null);
+        AppenderRef[] refs = new AppenderRef[] {ref};
+        LoggerConfig loggerConfig = LoggerConfig.createLogger("false", Level.DEBUG, "com.ibm.team.tap.tools.attachmentsMigrator.AttachmentMigrationUtility",
+            "true", refs, null, config, null );
+        loggerConfig.addAppender(appender, null, null);
+        config.addLogger("com.ibm.team.tap.tools.attachmentsMigrator.AttachmentMigrationUtility", loggerConfig);
+        ctx.updateLoggers();
 	}
 
 	public static void logDebug(String message) {
