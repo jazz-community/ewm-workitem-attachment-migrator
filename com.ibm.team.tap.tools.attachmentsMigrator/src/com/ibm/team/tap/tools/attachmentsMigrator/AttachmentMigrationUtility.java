@@ -33,7 +33,7 @@ import com.ibm.team.tap.tools.attachmentsMigrator.util.Constants;
 import com.ibm.team.tap.tools.attachmentsMigrator.util.LogUtils;
 
 public class AttachmentMigrationUtility {
-	
+
 	private static enum CmdLineArg {
 		COMMANDS("-c", "-commands"), //$NON-NLS-1$ //$NON-NLS-2$
 		LOG("-l", "-log"), //$NON-NLS-1$ //$NON-NLS-2$
@@ -220,7 +220,7 @@ public class AttachmentMigrationUtility {
 		LogUtils.logInfo("-----------------------------------------------------"); //$NON-NLS-1$
 		LogUtils.logInfo(message);
 		LogUtils.logInfo("-----------------------------------------------------"); //$NON-NLS-1$
-		
+
 	}
 
 	private static void analyzeAndUpdateAttachments(String serverUri, String userName, String password, String projectItemId, AttachmentUpdateCommand updateCommand) {
