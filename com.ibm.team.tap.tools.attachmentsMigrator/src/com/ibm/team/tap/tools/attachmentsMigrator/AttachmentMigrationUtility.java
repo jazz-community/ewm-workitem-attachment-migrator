@@ -47,7 +47,7 @@ public class AttachmentMigrationUtility {
 		ADD_WI_ID("-addWorkItemId", "-addWorkItemId"), //$NON-NLS-1$ //$NON-NLS-2$
 		DELETE_ATTACHMENTS_WITH_NO_WI("-deleteAttachmentsNoWI", "-delAttachmentsNoWI", false), //$NON-NLS-1$ //$NON-NLS-2$
 		PROJECT("-p", "-project"), //$NON-NLS-1$ //$NON-NLS-2$
-		LOGGER_LEVEL("-ll", "-level");
+		LOGGER_LEVEL("-ll", "-level"); //$NON-NLS-1$ //$NON-NLS-2$
 
 		private final String fShortName;
 		private final String fLongName;
